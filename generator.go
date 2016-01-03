@@ -1,9 +1,19 @@
 package goper
 
-import "io"
-import "fmt"
-import "strings"
-import "database/sql"
+import (
+	"io"
+	"os"
+	"fmt"
+	"strings"
+	"database/sql"
+	"log"
+)
+
+var logger *log.Logger
+
+func init () {
+	logger = log.New(ColourStream{os.Stderr}, " [XXXX] ", log.LstdFlags)
+}
 
 // A SchemaWriter writes a set of tables to the writer denoted by Outfile
 type SchemaWriter struct {
@@ -47,6 +57,8 @@ func (this *SchemaWriter) WriteField(column *Column) {
 // Load the database schema into memory using introspection, populating .Tables
 func (this *SchemaWriter) LoadSchema(driver string, schema string, db *sql.DB) error {
 	dialect := DialectByDriver(driver)
+	logger.Printf("schema: %s\n", schema)
+	logger.Printf("db: %v\n", db)
 	tables, err := db.Query(dialect.ListTables(schema))
 	if err != nil {
 		return err
