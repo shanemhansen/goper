@@ -19,7 +19,7 @@ Installation
 
     # install the library:
     # install the sqlite development libraries
-    go get github.com/shanemhansen/goger
+    go get github.com/shanemhansen/goper
     
 
 Examples
